@@ -1,0 +1,28 @@
+1,CyclicBarrier 顾名思义是：可循环（Cyclic）使用的屏障(Barrier)
+它要做的事情是，让一组线程到达一个屏障（也可以叫同步点）时被阻塞，直到最后一个线程到达屏障时，屏障才会开门，所有被屏障拦截的线程才会继续干活。
+线程进入屏障通过CyclicBarrier的await()方法。
+
+CyclicBarrier默认的构造方法是CyclicBarrier(int parties)，其参数表示屏障拦截的线程数量，每个线程调用await方法告诉CyclicBarrier我已经到达了屏障，
+然后当前线程被阻塞。
+
+CyclicBarrier还提供一个更高级的构造函数CyclicBarrier(int parties, Runnable barrierAction)，用于在线程到达屏障时，
+优先执行barrierAction这个Runnable对象，方便处理更复杂的业务场景。
+
+构造方法:
+    public CyclicBarrier(int parties) {
+        this(parties, null);
+    }
+    public int getParties() {
+        return parties;
+    }
+实现原理：在CyclicBarrier的内部定义了一个Lock对象，每当一个线程调用CyclicBarrier的await方法时，将剩余拦截的线程数减1，
+然后判断剩余拦截数是否为0，如果不是，进入Lock对象的条件队列等待。如果是，执行barrierAction对象的Runnable方法，
+然后将锁的条件队列中的所有线程放入锁等待队列中，这些线程会依次的获取锁、释放锁，接着先从await方法返回，再从CyclicBarrier的await方法中返回。
+
+3,CyclicBarrier和CountDownLatch之间的区别:
+
+    CyclicBarrier主要用于一组线程之间的相互等待，而CountDownLatch一般用于一组线程等待另一组些线程。
+    实际上可以通过CountDownLatch的countDown()和await()来实现CyclicBarrier的功能。
+    即 CountDownLatch中的countDown()+await() = CyclicBarrier中的await()。注意：在一个线程中先调用countDown()，然后调用await()。
+
+    其它方法：CyclicBarrier对象可以重复使用，重用之前应当调用CyclicBarrier对象的reset方法。
