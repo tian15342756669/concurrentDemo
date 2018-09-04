@@ -1,0 +1,30 @@
+在NIO中有几个比较关键的概念：Channel（通道），Buffer（缓冲区），Selector（选择器）
+
+1,Channel(通道)
+    以下是常用的几种通道：
+
+    FileChannel
+    SocketChanel
+    ServerSocketChannel
+    DatagramChannel
+    通过使用FileChannel可以从文件读或者向文件写入数据；
+    通过SocketChannel，以TCP来向网络连接的两端读写数据；
+    通过ServerSocketChanel能够监听客户端发起的TCP连接，并为每个TCP连接创建一个新的SocketChannel来进行数据读写；
+    通过DatagramChannel，以UDP协议来向网络连接的两端读写数据。
+
+
+    在NIO中，Buffer是一个顶层父类，它是一个抽象类，常用的Buffer的子类有：
+
+    ByteBuffer
+    IntBuffer
+    CharBuffer
+    LongBuffer
+    DoubleBuffer
+    FloatBuffer
+    ShortBuffer
+
+    Selector类是NIO的核心类，Selector能够检测多个注册的通道上是否有事件发生，如果有事件发生，便获取事件然后针对每个事件进行相应的响应处理。
+    这样一来，只是用一个单线程就可以管理多个通道，也就是管理多个连接。这样使得只有在连接真正有读写事件发生时，才会调用函数来进行读写，
+    就大大地减少了系统开销，并且不必为每个连接都创建一个线程，不用去维护多个线程，并且避免了多线程之间的上下文切换导致的开销。
+
+    与Selector有关的一个关键类是SelectionKey，一个SelectionKey表示一个到达的事件，这2个类构成了服务端处理业务的关键逻辑。
