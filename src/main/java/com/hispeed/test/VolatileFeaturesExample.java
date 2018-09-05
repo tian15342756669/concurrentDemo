@@ -5,20 +5,28 @@ package com.hispeed.test;
  */
 public class VolatileFeaturesExample {
 
-    //使用volatile声明64位的long型变量
+    /**
+    使用volatile声明64位的long型变量
+     */
     volatile long vl = 0L;
 
-    //单个volatile变量的写
+    /**
+     * 单个volatile变量的写
+     */
     public void set(long l) {
         vl = l;
     }
 
-    //复合（多个）volatile变量的读/写
+    /**
+     * 复合（多个）volatile变量的读/写
+     */
     public void getAndIncrement () {
         vl++;
     }
 
-    //单个volatile变量的读
+    /**
+     * 单个volatile变量的读
+     */
     public long get() {
         return vl;
     }
@@ -46,7 +54,8 @@ public class VolatileFeaturesExample {
  原子性：对任意单个volatile变量的读/写具有原子性，但类似于volatile++这种复合操作不具有原子性。
  */
 class VolatileFeaturesExample2 {
-    long vl = 0L;               // 64位的long型普通变量
+    // 64位的long型普通变量
+    long vl = 0L;
 
     public synchronized void set(long l) {     //对单个的普通 变量的写用同一个监视器同步
         vl = l;
